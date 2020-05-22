@@ -96,9 +96,42 @@ class SortingRobot:
         """
         Sort the robot's list.
         """
-        # Fill this out
-        pass
-
+        # The robot needs to pick up the first object in the list, move the next position, compare the objects. While moving right, if the held item is larger, trade items. While moving left, if the held item is smaller, trade items. This functions similar to a bubble sort.
+        # Start the loop
+        while True:
+            # Set the light off at the beginning of the loop to determine if the the list requires further sorting
+            self.set_light_off()
+                # Move through the list going right
+            while self.can_move_right():
+                # This loop will move through the light, picking up the current item. The first swap grabs the "None" value
+                self.swap_item()
+                # Moving to the next position
+                self.move_right()
+                # Compare the current held to current position. If current held is greater, trade items
+                if self.compare_item() == 1:    
+                    self.swap_item()
+                    self.set_light_on()
+                # If it isn't, move the held item back to it's original position
+                self.move_left()
+                self.swap_item()
+                self.move_right()
+            # After getting to the end of the list, it begins moving backwards through the list
+            while self.can_move_left():
+                # Grab the last/current item and move the the next position to the left
+                self.swap_item()
+                self.move_left()
+                # Check if the held item is less than the current position. If current held is less, swap items and set the light on
+                if self.compare_item() == -1:
+                    self.swap_item()
+                    # This light will let us continue to loop so long as it finds an item that has to move down the list
+                    self.set_light_on()
+                # If the held item isn't less, put it back in it's original position
+                self.move_right()
+                self.swap_item()
+                self.move_left()
+            # If the light is off, the robot has found no numbers that belong lower on the list and ends the loop
+            if self.light_is_on() is False:
+                break
 
 if __name__ == "__main__":
     # Test our your implementation from the command line
